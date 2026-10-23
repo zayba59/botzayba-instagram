@@ -9,53 +9,65 @@ Tamamen **ücretsiz** çalışır (GitHub Actions + Instagram resmi API + Gemini
 
 ---
 
-## Kurulum (tek seferlik, ~30 dakika)
+## Kurulum (tek seferlik)
 
-### 1) Instagram ve Facebook hazırlığı
-1. Instagram → Ayarlar → **Hesap türü ve araçlar** → **Profesyonel hesaba geç** (İşletme veya İçerik Üreticisi).
-2. Bir **Facebook Sayfası** oluştur (ör. "BotZayba") ve Instagram hesabını bu sayfaya bağla
-   (Facebook Sayfası → Ayarlar → Bağlı hesaplar → Instagram).
+Facebook **Sayfası** gerekmez. Sadece Meta geliştirici paneline girmek için bir Facebook
+hesabı gerekir (Instagram'ın resmi API'si Meta'ya ait).
 
-### 2) Meta geliştirici uygulaması ve erişim anahtarı
-1. https://developers.facebook.com → giriş yap → **Uygulamalarım → Uygulama oluştur**.
-   Tür olarak **İşletme (Business)** seç.
-2. Uygulamaya **Instagram** ürününü ekle.
-3. **Araçlar → Graph API Explorer** sayfasını aç:
-   - Sağ üstte uygulamanı seç.
-   - "İzin ekle" kısmından şunları ekle:
-     `instagram_basic`, `instagram_content_publish`, `pages_show_list`, `pages_read_engagement`, `business_management`
-   - **Generate Access Token** → Facebook ile onayla.
-4. Çıkan anahtarı **Access Token Debugger** (https://developers.facebook.com/tools/debug/accesstoken/)
-   sayfasına yapıştır → en altta **Extend Access Token** → uzun süreli anahtarı kopyala.
-5. Graph API Explorer'a bu uzun süreli anahtarı yapıştır ve şu sorguyu çalıştır:
-   `me/accounts`
-   → Sayfanın altındaki `access_token` değeri **süresi dolmayan sayfa anahtarındır** → bu `IG_ACCESS_TOKEN`.
-   → Aynı yerdeki `id` sayfa kimliğidir.
-6. Şu sorguyu çalıştır (SAYFA_ID yerine yukarıdaki id):
-   `SAYFA_ID?fields=instagram_business_account`
-   → Çıkan `id` → bu `IG_USER_ID`.
+### 1) Instagram'ı profesyonel hesaba çevirin
+Instagram → Profil → ☰ → **Hesap türü ve araçlar** → **Profesyonel hesaba geç** →
+kategori seçin → **İşletme**. (Zorunludur; kişisel hesaplar API ile paylaşım yapamaz.)
 
-### 3) Gemini anahtarı (isteğe bağlı ama önerilir)
-https://aistudio.google.com → **Get API key** → **Create API key** → kopyala.
-Bu anahtar olursa program her gün yeni, benzersiz bir reklam yazar.
-Olmazsa hazır 30 içeriği sırayla paylaşır (30 günde bir başa döner).
+### 2) Meta uygulaması oluşturun
+1. https://developers.facebook.com → Facebook hesabınızla giriş yapın.
+2. **Uygulamalarım → Uygulama oluştur**. Ad: `BotZayba Poster`.
+3. Kullanım alanı sorulursa **Diğer / Other** → tür: **İşletme / Business** → **Oluştur**.
+4. Sol menüden **Instagram** ürününü ekleyin ve
+   **API setup with Instagram login** bölümünü açın.
+5. **3. Set up Instagram business login** → **Business login settings**:
+   - **Redirect URI** kutusuna açılabilen bir https adresi yazın. Kendi siteniz yoksa
+     `https://zayba-download.vercel.app/` gibi size ait herhangi bir adres olur;
+     bu sayfa sadece anahtarı almak için bir kez kullanılacak.
+   - Kaydedin.
+6. Aynı sayfadaki **Instagram App ID** ve **Instagram App Secret** değerlerini not edin.
 
-### 4) GitHub
-1. https://github.com → **New repository** → ad: `botzayba-instagram` → **Public** seç
-   (Instagram görseli herkese açık bir adresten çekmek zorunda; zaten Instagram'da yayınlanacak içerikler).
-2. Bu klasördeki tüm dosyaları depoya yükle (**Add file → Upload files**; `.github` klasörü dahil).
-3. Depoda **Settings → Secrets and variables → Actions → New repository secret** ile şunları ekle:
+### 3) Erişim anahtarını alın
+Bilgisayarınızda proje klasöründe:
+```bash
+python scripts/token.py
+```
+Program sırayla App ID, App Secret ve Redirect URI'yi ister, size bir bağlantı verir.
+Bağlantıyı tarayıcıda açıp Instagram ile izin verirsiniz; yönlendirildiğiniz adresi
+kopyalayıp programa yapıştırırsınız. Sonunda ekrana **IG_ACCESS_TOKEN** ve
+**IG_USER_ID** değerleri yazılır.
 
-   | Ad | Değer |
-   |---|---|
-   | `IG_USER_ID` | 2. adımdaki Instagram hesap kimliği |
-   | `IG_ACCESS_TOKEN` | 2. adımdaki sayfa anahtarı |
-   | `GEMINI_API_KEY` | 3. adımdaki anahtar (isteğe bağlı) |
+### 4) Gemini anahtarı (isteğe bağlı ama önerilir)
+https://aistudio.google.com → **Get API key** → **Create API key**.
+Bu anahtar varsa program her gün yeni bir reklam yazar; yoksa hazır 30 içeriği sırayla kullanır.
 
-4. **Actions** sekmesi → "Günlük Instagram paylaşımı" → **Run workflow** ile hemen bir deneme yap.
-   Yeşil tik çıkarsa Instagram'ı kontrol et. Bundan sonra her gün kendiliğinden paylaşır.
+### 5) GitHub Secrets
+Depoda **Settings → Secrets and variables → Actions → New repository secret**:
 
----
+| Ad | Değer | Zorunlu |
+|---|---|---|
+| `IG_ACCESS_TOKEN` | 3. adımdaki anahtar | evet |
+| `IG_USER_ID` | 3. adımdaki kimlik | evet |
+| `GEMINI_API_KEY` | 4. adımdaki anahtar | hayır |
+| `GH_TOKEN` | GitHub kişisel erişim anahtarı (aşağıya bakın) | hayır |
+
+**GH_TOKEN nedir?** Instagram anahtarı 60 günde bir yenilenmek zorundadır. Bu anahtarı
+eklerseniz program yenilemeyi kendisi yapar ve hiç uğraşmazsınız. Eklemezseniz süre
+dolmaya yaklaşınca GitHub size uyarı e-postası gönderir, `scripts/token.py` ile yeni
+anahtar alıp `IG_ACCESS_TOKEN` değerini elle güncellersiniz.
+
+Oluşturmak için: GitHub → sağ üst profil → **Settings** → en altta **Developer settings**
+→ **Personal access tokens → Fine-grained tokens** → **Generate new token**.
+Repository access: sadece `botzayba-instagram`. Permissions → Repository permissions →
+**Secrets: Read and write**. Süreyi **No expiration** yapın.
+
+### 6) Çalıştırın
+**Actions** sekmesi → **Günlük Instagram paylaşımı** → **Run workflow**.
+Yeşil tik çıkınca Instagram'ı kontrol edin. Bundan sonra her gün kendiliğinden paylaşır.
 
 ## Ayarlar
 - **Paylaşım saati:** `.github/workflows/daily-post.yml` içindeki `cron: "0 15 * * *"` (UTC).

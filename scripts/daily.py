@@ -2,13 +2,15 @@
 
   python scripts/daily.py prepare   # günün içeriğini seçer/üretir, görseli posts/ altına kaydeder
   python scripts/daily.py publish   # hazırlanan görseli Instagram'a paylaşır
+  python scripts/daily.py refresh   # erişim anahtarının ömrünü uzatır
+
+Instagram Login yöntemini kullanır (Facebook Sayfası gerekmez).
 
 Ortam değişkenleri:
   GEMINI_API_KEY   (isteğe bağlı) varsa her gün yapay zekâ ile yeni reklam yazılır
   GEMINI_MODEL     (isteğe bağlı) varsayılan: gemini-2.5-flash
-  IG_USER_ID       Instagram profesyonel hesap kimliği
-  IG_ACCESS_TOKEN  Facebook sayfa erişim anahtarı
-  GRAPH_VERSION    (isteğe bağlı) varsayılan: v23.0
+  IG_ACCESS_TOKEN  Instagram uzun ömürlü erişim anahtarı (scripts/token.py ile alınır)
+  IG_USER_ID       (isteğe bağlı) varsayılan: me
   IMAGE_BASE_URL   görselin herkese açık adresi için önek (GitHub Actions'ta otomatik)
 """
 import datetime as dt
@@ -26,6 +28,7 @@ from generate import ROOT, load_content, render  # noqa: E402
 
 POSTS = ROOT / "posts"
 STATE = POSTS / "state.json"
+GRAPH = "https://graph.instagram.com/v23.0"
 TODAY = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date().isoformat()  # Türkiye saati
 
 # Yapay zekânın yazdığı metinde görmek istemediğimiz vaatler
@@ -153,12 +156,12 @@ def prepare():
 
 
 def publish():
-    uid = os.environ.get("IG_USER_ID")
     token = os.environ.get("IG_ACCESS_TOKEN")
     base = os.environ.get("IMAGE_BASE_URL", "").rstrip("/")
-    if not (uid and token and base):
-        print("IG_USER_ID / IG_ACCESS_TOKEN / IMAGE_BASE_URL eksik — paylaşım atlandı (deneme modu).")
+    if not (token and base):
+        print("IG_ACCESS_TOKEN / IMAGE_BASE_URL eksik — paylaşım atlandı (deneme modu).")
         return
+    uid = os.environ.get("IG_USER_ID") or "me"
     meta = json.loads((POSTS / f"{TODAY}.json").read_text(encoding="utf-8"))
     state = load_state()
     entry = next(h for h in state["history"] if h["date"] == TODAY)
@@ -166,15 +169,16 @@ def publish():
         print("Bugünün gönderisi zaten paylaşılmış.")
         return
 
-    graph = f"https://graph.facebook.com/{os.environ.get('GRAPH_VERSION', 'v23.0')}"
     image_url = f"{base}/posts/{TODAY}.jpg"
     print("Görsel adresi:", image_url)
 
-    q = urllib.parse.urlencode({"image_url": image_url, "caption": meta["full_caption"], "access_token": token})
-    container = http_json(f"{graph}/{uid}/media?{q}", method="POST")["id"]
+    q = urllib.parse.urlencode({"image_url": image_url, "caption": meta["full_caption"],
+                                "access_token": token})
+    container = http_json(f"{GRAPH}/{uid}/media?{q}", method="POST")["id"]
 
     for _ in range(30):  # Instagram görseli işlerken bekle
-        st = http_json(f"{graph}/{container}?fields=status_code&access_token={urllib.parse.quote(token)}")
+        st = http_json(f"{GRAPH}/{container}?fields=status_code&"
+                       + urllib.parse.urlencode({"access_token": token}))
         if st.get("status_code") == "FINISHED":
             break
         if st.get("status_code") == "ERROR":
@@ -182,12 +186,72 @@ def publish():
         time.sleep(5)
 
     q = urllib.parse.urlencode({"creation_id": container, "access_token": token})
-    media_id = http_json(f"{graph}/{uid}/media_publish?{q}", method="POST")["id"]
+    media_id = http_json(f"{GRAPH}/{uid}/media_publish?{q}", method="POST")["id"]
     entry["media_id"] = media_id
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Paylaşıldı! media_id={media_id}")
 
 
+def refresh():
+    """Anahtarın ömrünü uzatır. Anahtar 60 gün geçerlidir; her çalıştırmada yenilenir.
+
+    GH_TOKEN verilmişse yeni anahtar GitHub Secret'ına otomatik yazılır.
+    Verilmemişse süre azaldığında hata vererek GitHub'ın uyarı e-postası göndermesini sağlar.
+    """
+    token = os.environ.get("IG_ACCESS_TOKEN")
+    if not token:
+        return
+    try:
+        q = urllib.parse.urlencode({"grant_type": "ig_refresh_token", "access_token": token})
+        res = http_json(f"{GRAPH}/refresh_access_token?{q}")
+    except Exception as e:
+        print(f"Anahtar yenilenemedi: {e}")
+        return
+    new_token, days = res.get("access_token", token), int(res.get("expires_in", 0)) // 86400
+    print(f"Anahtar yenilendi, {days} gün geçerli.")
+    if update_github_secret(new_token):
+        return
+    if days < 15:
+        raise SystemExit(
+            f"DİKKAT: Instagram anahtarının bitmesine {days} gün kaldı. "
+            "scripts/token.py ile yeni anahtar alıp GitHub Secrets'taki "
+            "IG_ACCESS_TOKEN değerini güncelleyin.")
+
+
+def update_github_secret(value):
+    """Yeni anahtarı GitHub Secret olarak kaydeder (GH_TOKEN varsa)."""
+    gh, repo = os.environ.get("GH_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
+    if not (gh and repo):
+        return False
+    try:
+        from base64 import b64encode
+
+        from nacl import encoding, public  # type: ignore
+
+        api = f"https://api.github.com/repos/{repo}/actions/secrets"
+        hdr = {"Authorization": f"Bearer {gh}", "Accept": "application/vnd.github+json"}
+
+        def call(url, data=None, method=None):
+            req = urllib.request.Request(url, method=method, headers={**hdr, **(
+                {"Content-Type": "application/json"} if data else {})},
+                data=json.dumps(data).encode() if data else None)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                body = r.read().decode()
+                return json.loads(body) if body.strip() else {}
+
+        key = call(f"{api}/public-key")
+        sealed = public.SealedBox(public.PublicKey(key["key"].encode(), encoding.Base64Encoder))
+        call(f"{api}/IG_ACCESS_TOKEN", {
+            "encrypted_value": b64encode(sealed.encrypt(value.encode())).decode(),
+            "key_id": key["key_id"]}, method="PUT")
+        print("Yeni anahtar GitHub Secret'ına kaydedildi.")
+        return True
+    except Exception as e:
+        print(f"Anahtar GitHub'a yazılamadı: {e}")
+        return False
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    {"prepare": prepare, "publish": publish}.get(cmd, lambda: sys.exit(__doc__))()
+    {"prepare": prepare, "publish": publish, "refresh": refresh}.get(
+        cmd, lambda: sys.exit(__doc__))()
