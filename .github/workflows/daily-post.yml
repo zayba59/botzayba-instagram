@@ -1,0 +1,53 @@
+name: Günlük Instagram paylaşımı
+
+on:
+  schedule:
+    # Her gün 18:00 Türkiye saati (15:00 UTC)
+    - cron: "0 15 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-post
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Günün reklamını hazırla
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/daily.py prepare
+
+      - name: Görseli depoya kaydet
+        id: commit
+        run: |
+          git config user.name "botzayba-bot"
+          git config user.email "botzayba-bot@users.noreply.github.com"
+          git add posts/
+          git diff --cached --quiet || git commit -m "Günlük paylaşım: $(date +%F)"
+          git push
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Instagram'a paylaş
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IMAGE_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ steps.commit.outputs.sha }}
+        run: python scripts/daily.py publish
+
+      - name: Paylaşım kaydını güncelle
+        run: |
+          git add posts/state.json
+          git diff --cached --quiet || (git commit -m "Paylaşım kaydı: $(date +%F)" && git push)
