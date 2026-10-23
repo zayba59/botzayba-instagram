@@ -47,6 +47,13 @@ jobs:
           IMAGE_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ steps.commit.outputs.sha }}
         run: python scripts/daily.py publish
 
+      - name: Erişim anahtarını yenile
+        if: always()
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python scripts/daily.py refresh
+
       - name: Paylaşım kaydını güncelle
         run: |
           git add posts/state.json
