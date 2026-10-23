@@ -1,0 +1,305 @@
+{
+  "brand": {
+    "name": "BotZayba",
+    "handle": "@botzayba",
+    "footer": "Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.",
+    "hashtags": "#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa"
+  },
+  "posts": [
+    {
+      "layout": "statement",
+      "kicker": "TANIŞALIM",
+      "title": "Piyasa 7/24 açık.\nSen değilsin.",
+      "body": "BotZayba, belirlediğin kurallarla Binance'te senin yerine emir verir. Uyurken de, çalışırken de.",
+      "caption": "Kripto piyasası hiç kapanmıyor. Ama insanın uyuması, çalışması, yaşaması lazım.\n\nBotZayba, belirlediğin kurallara göre Binance'te otomatik alım-satım emirleri veren algoritmik bir trading botu. Grid stratejisiyle çalışıyor ve duygularla değil, kurallarla hareket ediyor.\n\nTakipte kal, nasıl çalıştığını adım adım anlatacağız."
+    },
+    {
+      "layout": "steps",
+      "kicker": "GRID STRATEJİSİ",
+      "title": "Grid trading nedir?",
+      "items": [
+        "Bir fiyat aralığı belirlenir",
+        "Aralık eşit basamaklara (grid) bölünür",
+        "Her alt basamakta alım emri konur",
+        "Her üst basamakta satış emri konur"
+      ],
+      "caption": "Grid trading, fiyatın belirli bir aralıkta gidip gelmesinden faydalanmayı amaçlayan bir stratejidir.\n\n1) Bir alt ve üst fiyat sınırı belirlenir\n2) Bu aralık eşit basamaklara bölünür\n3) Fiyat düştükçe basamaklarda alım yapılır\n4) Fiyat yükseldikçe basamaklarda satış yapılır\n\nBotZayba bu emirleri senin yerine, kurallara bağlı kalarak yönetir."
+    },
+    {
+      "layout": "tips",
+      "kicker": "NEDEN BOT?",
+      "title": "Duygular değil,\nkurallar.",
+      "items": [
+        "Panikle satış yok",
+        "FOMO ile alım yok",
+        "Gece 3'te ekran başında beklemek yok",
+        "Her emir önceden belirlenen plana göre"
+      ],
+      "caption": "Trading'de en büyük düşman çoğu zaman piyasa değil, kendi duygularımız.\n\nKorku anında satmak, heyecanla tepeden almak… BotZayba önceden belirlenen kurallara göre çalışır, duygulara göre değil.\n\nSen planı yap, uygulamayı bota bırak."
+    },
+    {
+      "layout": "statement",
+      "kicker": "YATAY PİYASA",
+      "title": "Fiyat yerinde sayıyor mu?",
+      "body": "Grid stratejisi, fiyatın bir aralıkta dalgalandığı yatay piyasalar için tasarlanmıştır.",
+      "caption": "Piyasa her zaman net bir yöne gitmez. Çoğu zaman fiyat belli bir aralıkta aşağı yukarı dalgalanır.\n\nGrid stratejisi tam olarak bu dalgalanmalar için tasarlanmıştır: aralığın altında alım, üstünde satış.\n\nUnutma: Fiyat aralığın dışına çıkarsa strateji beklendiği gibi çalışmayabilir. Aralığı doğru seçmek önemlidir."
+    },
+    {
+      "layout": "tips",
+      "kicker": "İPUCU",
+      "title": "Doğru aralık\nnasıl seçilir?",
+      "items": [
+        "Son haftaların destek ve dirençlerine bak",
+        "Çok dar aralık = sık işlem, düşük marj",
+        "Çok geniş aralık = seyrek işlem",
+        "Aralık dışına çıkma ihtimalini hesaba kat"
+      ],
+      "caption": "Grid stratejisinde en kritik karar: fiyat aralığı.\n\nÇok dar seçersen fiyat kolayca aralığın dışına çıkar. Çok geniş seçersen işlemler seyrekleşir.\n\nKaydet, aralık belirlerken bu listeye dönüp bak."
+    },
+    {
+      "layout": "steps",
+      "kicker": "BOTZAYBA NASIL ÇALIŞIR?",
+      "title": "4 adımda BotZayba",
+      "items": [
+        "Binance hesabını API ile bağla",
+        "Coin ve fiyat aralığını seç",
+        "Grid sayısını ve bütçeni belirle",
+        "Bot emirleri 7/24 takip eder"
+      ],
+      "caption": "BotZayba'nın mantığı basit:\n\n1) Binance hesabını API anahtarıyla bağlarsın\n2) Hangi coin'de ve hangi fiyat aralığında çalışacağını seçersin\n3) Grid sayısını ve kullanacağın bütçeyi belirlersin\n4) Bot emirleri yerleştirir ve 7/24 takip eder\n\nKontrol her zaman sende."
+    },
+    {
+      "layout": "tips",
+      "kicker": "GÜVENLİK",
+      "title": "API anahtarında\naltın kurallar",
+      "items": [
+        "Para çekme iznini asla açma",
+        "IP kısıtlaması kullan",
+        "Anahtarı kimseyle paylaşma",
+        "Kullanmadığın anahtarı sil"
+      ],
+      "caption": "Bir trading botunu borsaya bağlarken güvenlik her şeyden önce gelir.\n\nBinance API anahtarı oluştururken sadece işlem iznini aç, para çekme iznini asla açma. Mümkünse IP kısıtlaması ekle.\n\nBu gönderiyi kaydet, bir gün lazım olacak."
+    },
+    {
+      "layout": "statement",
+      "kicker": "ALGORİTMİK TRADING",
+      "title": "Sabır bir strateji.\nOtomasyon bir araç.",
+      "body": "BotZayba sabrı kurallara, kuralları koda dönüştürür.",
+      "caption": "Algoritmik trading sihir değildir. Önceden belirlenmiş kuralların, insan hatası olmadan, tutarlı şekilde uygulanmasıdır.\n\nBotZayba'nın hedefi tam olarak bu: tutarlılık."
+    },
+    {
+      "layout": "tips",
+      "kicker": "RİSK YÖNETİMİ",
+      "title": "Bota bile körü\nkörüne güvenme",
+      "items": [
+        "Kaybetmeyi göze alamayacağın parayla girme",
+        "Bütçeni tek coin'e yığma",
+        "Botu düzenli kontrol et",
+        "Piyasa değişince ayarları gözden geçir"
+      ],
+      "caption": "Hiçbir bot, hiçbir strateji kazancı garanti etmez. Bunu söyleyen biri varsa uzak dur.\n\nBir bot sadece kurallarını uygular. O kuralları belirlemek ve riski yönetmek her zaman senin sorumluluğunda.\n\nBotZayba'da şeffaflık bu yüzden önemli."
+    },
+    {
+      "layout": "steps",
+      "kicker": "ÖRNEKLE ANLAYALIM",
+      "title": "Bir grid döngüsü",
+      "items": [
+        "Fiyat bir basamak düşer → alım",
+        "Fiyat bir basamak yükselir → satış",
+        "Aradaki fark döngünün marjıdır",
+        "Döngü aralık içinde tekrarlanır"
+      ],
+      "caption": "Grid trading'de her basamak küçük bir al-sat döngüsüdür.\n\nFiyat bir basamak düşünce bot alır, bir basamak yükselince satar. Basamaklar arasındaki fark, işlem ücretleri düşüldükten sonra o döngünün marjıdır.\n\nNot: Fiyat aralığın altına sert düşerse elinde değeri düşmüş coin kalabilir. Strateji risksiz değildir."
+    },
+    {
+      "layout": "statement",
+      "kicker": "ŞEFFAFLIK",
+      "title": "Her emir kayıtlı.\nHer işlem görünür.",
+      "body": "Açık emirler, bakiye ve işlem geçmişi anlık takip edilir.",
+      "caption": "Bir botun ne yaptığını bilmiyorsan, ona güvenmemelisin.\n\nBotZayba'da açık emirler, bakiye durumu ve tamamlanan işlemler anlık olarak izlenir. Binance bağlantısı canlı mı, son güncelleme ne zaman yapıldı, hepsi görünür."
+    },
+    {
+      "layout": "tips",
+      "kicker": "SIK YAPILAN HATALAR",
+      "title": "Grid trading'de\n4 klasik hata",
+      "items": [
+        "Trend piyasasında grid kurmak",
+        "İşlem ücretlerini hesaba katmamak",
+        "Çok fazla grid ile marjı eritmek",
+        "Kurup unutmak"
+      ],
+      "caption": "Grid trading basit görünür ama yaygın hatalar çok.\n\nÖzellikle işlem ücretleri: Basamaklar arası fark, ücretlerden küçükse her işlem aslında zarar demektir.\n\nSen bunlardan hangisini yaptın? 👇"
+    },
+    {
+      "layout": "statement",
+      "kicker": "TERİM SÖZLÜĞÜ",
+      "title": "Grid seviyesi",
+      "body": "Fiyat aralığı içinde, alım veya satış emrinin bekletildiği her bir basamak.",
+      "caption": "Terim sözlüğü serisi #1: Grid seviyesi\n\nBelirlediğin alt ve üst fiyat arasındaki aralık eşit parçalara bölünür. Bu parçaların her bir sınırı bir grid seviyesidir. Bot, fiyat bu seviyelere geldiğinde işlem yapar."
+    },
+    {
+      "layout": "statement",
+      "kicker": "TERİM SÖZLÜĞÜ",
+      "title": "Spread",
+      "body": "Bir varlığın en iyi alış ve en iyi satış fiyatı arasındaki fark.",
+      "caption": "Terim sözlüğü serisi #2: Spread\n\nSpread, emir defterindeki en yüksek alış fiyatıyla en düşük satış fiyatı arasındaki farktır. Likiditesi düşük coin'lerde spread geniş olabilir, bu da grid stratejisinin verimini etkiler."
+    },
+    {
+      "layout": "statement",
+      "kicker": "TERİM SÖZLÜĞÜ",
+      "title": "Limit emir",
+      "body": "Belirlediğin fiyattan ya da daha iyisinden gerçekleşen emir türü.",
+      "caption": "Terim sözlüğü serisi #3: Limit emir\n\nPiyasa emri anlık fiyattan işlem yapar. Limit emir ise senin belirlediğin fiyatı bekler. Grid botları basamaklara limit emirler yerleştirerek çalışır."
+    },
+    {
+      "layout": "tips",
+      "kicker": "BOTZAYBA ÖZELLİKLERİ",
+      "title": "Arka planda neler oluyor?",
+      "items": [
+        "Binance ile canlı bağlantı",
+        "Açık emirlerin anlık takibi",
+        "Bakiye güncelliği kontrolü",
+        "Bağlantı koparsa güvenli bekleme"
+      ],
+      "caption": "Bir botun en önemli özelliği hızlı olması değil, doğru veriyle çalışmasıdır.\n\nBotZayba, Binance bağlantısının canlı olup olmadığını ve bakiye verisinin ne kadar güncel olduğunu sürekli kontrol eder. Veri eskiyse ya da bağlantı koptuysa körü körüne işlem yapmaz."
+    },
+    {
+      "layout": "statement",
+      "kicker": "MOTİVASYON",
+      "title": "Küçük adımlar,\ntutarlı döngüler.",
+      "body": "Grid trading tek bir büyük hamleye değil, tekrarlanan küçük işlemlere dayanır.",
+      "caption": "Herkes büyük hamlenin peşinde. Grid stratejisi ise farklı düşünür: Tekrarlanan küçük, kurallı işlemler.\n\nYine hatırlatalım: Hiçbir strateji kazanç garantisi vermez. Ama plan, plansızlıktan her zaman iyidir."
+    },
+    {
+      "layout": "steps",
+      "kicker": "BAŞLAMADAN ÖNCE",
+      "title": "Kendine şu soruları sor",
+      "items": [
+        "Bu parayı kaybetmeyi göze alabilir miyim?",
+        "Hangi coin, hangi aralık, neden?",
+        "Fiyat aralık dışına çıkarsa ne yapacağım?",
+        "Botu ne sıklıkla kontrol edeceğim?"
+      ],
+      "caption": "Bir trading botu çalıştırmadan önce cevaplaman gereken 4 soru.\n\nCevapların net değilse, beklemek de bir stratejidir. Kaydet ve başlamadan önce tekrar oku."
+    },
+    {
+      "layout": "tips",
+      "kicker": "GRID vs MANUEL",
+      "title": "Farkı ne?",
+      "items": [
+        "Manuel: ekran başında saatler",
+        "Grid bot: emirler önceden hazır",
+        "Manuel: duygusal kararlar",
+        "Grid bot: kurala bağlı uygulama"
+      ],
+      "caption": "Manuel trading ile grid bot arasındaki temel fark: zaman ve disiplin.\n\nBot daha akıllı değildir, sadece yorulmaz ve kurallardan sapmaz. Stratejiyi belirleyen yine sensin."
+    },
+    {
+      "layout": "statement",
+      "kicker": "YAKINDA",
+      "title": "BotZayba\ngeliştirilmeye devam ediyor.",
+      "body": "Gelişmeleri ilk sen öğrenmek istiyorsan takipte kal.",
+      "caption": "BotZayba şu an aktif olarak geliştiriliyor ve test ediliyor.\n\nYeni özellikler, strateji notları ve süreçten kareler burada paylaşılacak. Takip et, bildirimleri aç 🔔"
+    },
+    {
+      "layout": "tips",
+      "kicker": "İŞLEM ÜCRETLERİ",
+      "title": "Görünmeyen maliyet",
+      "items": [
+        "Her al-sat iki kez ücret demek",
+        "Basamak aralığı ücretlerden büyük olmalı",
+        "Çok sık işlem ≠ daha iyi sonuç",
+        "Ücret indirimlerini araştır"
+      ],
+      "caption": "Grid botları çok sayıda işlem yapar. Her işlemin bir ücreti vardır.\n\nBasamaklar arası yüzde fark, toplam işlem ücretinden küçükse bot her döngüde zarar eder. Ayarları yaparken bunu mutlaka hesapla."
+    },
+    {
+      "layout": "steps",
+      "kicker": "PİYASA OKUMA",
+      "title": "Grid için uygun ortam",
+      "items": [
+        "Belirgin bir yatay bant var",
+        "Yeterli likidite ve hacim var",
+        "Dalgalanma basamak aralığından büyük",
+        "Büyük bir haber/olay beklenmiyor"
+      ],
+      "caption": "Grid stratejisi her piyasa koşulunda aynı sonucu vermez.\n\nFiyatın belirli bir bantta gidip geldiği, hacmin yeterli olduğu dönemler grid için daha uygun kabul edilir. Sert trendlerde ise dikkatli olmak gerekir."
+    },
+    {
+      "layout": "statement",
+      "kicker": "FELSEFEMİZ",
+      "title": "Kontrol her zaman\nsende.",
+      "body": "BotZayba kararları senin yerine vermez, senin kararlarını uygular.",
+      "caption": "BotZayba'nın tasarım prensibi: Kullanıcı kontrolü.\n\nHangi coin, hangi aralık, ne kadar bütçe… Bunların hepsine sen karar verirsin. Bot sadece bu kararları disiplinli şekilde uygular ve istediğin an durdurulabilir."
+    },
+    {
+      "layout": "tips",
+      "kicker": "DOĞRU BİLİNEN YANLIŞLAR",
+      "title": "Botlar hakkında\n4 efsane",
+      "items": [
+        "\"Bot kesin kazandırır\" → Yanlış",
+        "\"Kur ve unut\" → Yanlış",
+        "\"Her piyasada çalışır\" → Yanlış",
+        "\"Risk yoktur\" → Kesinlikle yanlış"
+      ],
+      "caption": "Trading botları hakkında çok fazla abartılı vaat dolaşıyor.\n\nGerçek şu: Bot bir araçtır. Doğru kullanılırsa disiplin ve zaman kazandırır, ama kazanç garantisi vermez ve risk her zaman vardır.\n\nSana \"kesin kazanç\" vaat eden birine karşı dikkatli ol."
+    },
+    {
+      "layout": "statement",
+      "kicker": "SORU-CEVAP",
+      "title": "Fiyat aralığın\naltına düşerse?",
+      "body": "Bot yeni alım yapmaz; elinde aralık içinde alınmış coin'ler kalır. Bu yüzden aralık ve bütçe seçimi önemlidir.",
+      "caption": "En çok sorulan sorulardan biri: \"Fiyat belirlediğim aralığın dışına çıkarsa ne olur?\"\n\nAltına düşerse: Bot alımları yapmış olur ve elinde değeri düşmüş coin'ler kalabilir.\nÜstüne çıkarsa: Bot elindekileri satmış olur ve yükselişin devamını kaçırabilirsin.\n\nGrid'in risklerini bilmek, stratejiyi doğru kullanmanın ilk adımı."
+    },
+    {
+      "layout": "steps",
+      "kicker": "DİSİPLİN",
+      "title": "Haftalık kontrol listesi",
+      "items": [
+        "Bot çalışıyor ve bağlı mı?",
+        "Fiyat hâlâ aralığın içinde mi?",
+        "Açık emirler beklendiği gibi mi?",
+        "Piyasada büyük bir değişiklik var mı?"
+      ],
+      "caption": "Bot otomatik çalışır, ama gözetimsiz bırakılmamalı.\n\nHer hafta 5 dakikanı ayırıp bu listeyi kontrol et. Kaydet, hatırlatıcı olarak kullan ✅"
+    },
+    {
+      "layout": "statement",
+      "kicker": "BOTZAYBA",
+      "title": "Algorithmic\nTrading Technology",
+      "body": "Kurallarla çalışan, şeffaf ve kontrol edilebilir bir grid trading botu.",
+      "caption": "BotZayba = Algoritmik trading teknolojisi.\n\nGrid stratejisiyle çalışan, Binance'e bağlanan, emirlerini ve bakiyesini şeffaf şekilde takip eden bir bot.\n\nSoruların varsa yorumlara yaz, cevaplayalım 👇"
+    },
+    {
+      "layout": "tips",
+      "kicker": "YENİ BAŞLAYANLARA",
+      "title": "İlk grid botunu\nkurmadan önce",
+      "items": [
+        "Küçük bir bütçeyle başla",
+        "Tek bir coin seç",
+        "Tanıdığın, likit bir parite tercih et",
+        "Sonuçları not alıp öğren"
+      ],
+      "caption": "İlk kez grid trading deneyeceksen acele etme.\n\nKüçük başla, tek bir parite seç, süreci gözlemle ve öğren. Deneyim, her ayardan daha değerlidir."
+    },
+    {
+      "layout": "statement",
+      "kicker": "HATIRLATMA",
+      "title": "Garanti kazanç\ndiye bir şey yok.",
+      "body": "Bunu söyleyen her bot, kanal veya kişiye karşı dikkatli ol.",
+      "caption": "Kripto dünyasında \"garanti kazanç\", \"günlük %X getiri\" gibi vaatler maalesef çok yaygın.\n\nBotZayba olarak net söylüyoruz: Hiçbir bot kazanç garantisi veremez. Bizim vaadimiz sadece şeffaflık ve kurallara bağlı uygulama.\n\nBu gönderiyi ihtiyacı olan biriyle paylaş."
+    },
+    {
+      "layout": "steps",
+      "kicker": "GRID HESAPLAMA",
+      "title": "Basamak aralığı nasıl bulunur?",
+      "items": [
+        "Üst fiyat − alt fiyat = aralık",
+        "Aralık ÷ grid sayısı = basamak",
+        "Basamak ÷ fiyat = yüzde fark",
+        "Yüzde fark > toplam işlem ücreti olmalı"
+      ],
+      "caption": "Basit bir hesap, büyük fark yaratır.\n\nÖrnek: Aralık 100 birim, 20 grid → her basamak 5 birim. Bu 5 birimin fiyata oranı, al+sat işlem ücretlerinin toplamından büyük olmalı. Değilse her döngü ücretlere gider.\n\nKaydet, ayar yaparken kullan 🧮"
+    }
+  ]
+}
