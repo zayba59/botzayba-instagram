@@ -224,10 +224,14 @@ def refresh():
 
 def notify():
     """Günün görselini ve açıklamasını e-posta ile gönderir."""
-    user, pw = os.environ.get("SMTP_USER"), os.environ.get("SMTP_PASS")
+    user = (os.environ.get("SMTP_USER") or "").strip()
+    # Google uygulama şifresini boşluklu gösterir; boşluklar şifrenin parçası değildir.
+    pw = "".join((os.environ.get("SMTP_PASS") or "").split())
     if not (user and pw):
         print("SMTP_USER / SMTP_PASS yok — e-posta atlandı.")
         return
+    if len(pw) != 16:
+        print(f"UYARI: uygulama şifresi 16 hane olmalı, {len(pw)} hane girilmiş.")
     import smtplib
     from email.message import EmailMessage
 
@@ -246,10 +250,34 @@ def notify():
         + "-" * 40 + "\n\n" + meta["full_caption"] + "\n\n" + "-" * 40 + "\n")
     msg.add_attachment(img.read_bytes(), maintype="image", subtype="jpeg", filename=img.name)
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=60) as smtp:
-        smtp.login(user, pw)
-        smtp.send_message(msg)
-    print(f"E-posta gönderildi: {msg['To']}")
+    def send_ssl():
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=60) as smtp:
+            smtp.login(user, pw)
+            smtp.send_message(msg)
+
+    def send_starttls():
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=60) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.login(user, pw)
+            smtp.send_message(msg)
+
+    errors = []
+    for name, fn in (("SSL/465", send_ssl), ("STARTTLS/587", send_starttls)):
+        try:
+            fn()
+            print(f"E-posta gönderildi ({name}): {msg['To']}")
+            return
+        except Exception as e:
+            errors.append(f"{name}: {type(e).__name__}: {e}")
+            print(f"{name} başarısız — {type(e).__name__}: {e}")
+
+    raise SystemExit(
+        "E-posta gönderilemedi.\n" + "\n".join(errors) + "\n\n"
+        "Kontrol edin:\n"
+        f"  - SMTP_USER ({user}) uygulama şifresini aldığınız hesapla aynı mı?\n"
+        "  - SMTP_PASS gerçekten uygulama şifresi mi (Gmail giriş şifreniz değil)?\n"
+        "  - Hesapta 2 Adımlı Doğrulama açık mı?")
 
 
 def update_github_secret(value):
