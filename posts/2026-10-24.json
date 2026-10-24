@@ -1,10 +1,14 @@
 {
-  "next_index": 2,
-  "history": [
-    {
-      "date": "2026-10-23",
-      "title": "Piyasa 7/24 açık. Sen değilsin.",
-      "source": "bank"
-    }
-  ]
+  "layout": "tips",
+  "kicker": "NEDEN BOT?",
+  "title": "Duygular değil,\nkurallar.",
+  "items": [
+    "Panikle satış yok",
+    "FOMO ile alım yok",
+    "Gece 3'te ekran başında beklemek yok",
+    "Her emir önceden belirlenen plana göre"
+  ],
+  "caption": "Trading'de en büyük düşman çoğu zaman piyasa değil, kendi duygularımız.\n\nKorku anında satmak, heyecanla tepeden almak… BotZayba önceden belirlenen kurallara göre çalışır, duygulara göre değil.\n\nSen planı yap, uygulamayı bota bırak.",
+  "full_caption": "Trading'de en büyük düşman çoğu zaman piyasa değil, kendi duygularımız.\n\nKorku anında satmak, heyecanla tepeden almak… BotZayba önceden belirlenen kurallara göre çalışır, duygulara göre değil.\n\nSen planı yap, uygulamayı bota bırak.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "bank"
 }
