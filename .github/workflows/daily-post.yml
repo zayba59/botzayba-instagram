@@ -2,8 +2,9 @@ name: Günlük Instagram paylaşımı
 
 on:
   schedule:
-    - cron: "0 15 * * *"
-  workflow_dispatch: {}
+    # Her gün 08:00 Türkiye saati (05:00 UTC). GitHub birkaç dakika gecikebilir.
+    - cron: "0 5 * * *"
+  workflow_dispatch: {}   # Actions sekmesinden elle çalıştırmak için
 
 permissions:
   contents: write
@@ -23,7 +24,6 @@ jobs:
           python-version: "3.12"
 
       - run: pip install -r requirements.txt
-
 
       - name: Günün reklamını hazırla
         env:
@@ -46,6 +46,14 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IMAGE_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ steps.commit.outputs.sha }}
         run: python scripts/daily.py publish
+
+      - name: E-posta gönder
+        if: always()
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python scripts/daily.py notify
 
       - name: Erişim anahtarını yenile
         if: always()
