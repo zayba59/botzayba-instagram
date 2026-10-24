@@ -1,9 +1,14 @@
 {
-  "next_index": 1,
+  "next_index": 2,
   "history": [
     {
       "date": "2026-10-23",
       "title": "Piyasa 7/24 açık. Sen değilsin.",
+      "source": "bank"
+    },
+    {
+      "date": "2026-10-24",
+      "title": "Grid trading nedir?",
       "source": "bank"
     }
   ]
