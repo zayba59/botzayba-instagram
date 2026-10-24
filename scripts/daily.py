@@ -61,11 +61,42 @@ def http_json(url, data=None, method=None):
 
 # ---------- yapay zekâ ile içerik ----------
 
+def pick_gemini_model(key):
+    """Hesapta kullanılabilen modelleri sorar ve uygun olanı seçer.
+
+    Google model adlarını zamanla değiştirdiği için sabit ad yazmak yerine
+    listeyi sorup metin üretebilen en hafif (flash) modeli seçiyoruz.
+    """
+    url = ("https://generativelanguage.googleapis.com/v1beta/models?key="
+           + urllib.parse.quote(key))
+    names = []
+    for m in http_json(url).get("models", []):
+        if "generateContent" not in m.get("supportedGenerationMethods", []):
+            continue
+        name = m.get("name", "").removeprefix("models/")
+        if not name or "embedding" in name or "vision" in name:
+            continue
+        names.append(name)
+    if not names:
+        raise RuntimeError("Hesapta metin üretebilen Gemini modeli bulunamadı.")
+
+    def score(n):
+        return (
+            "flash" in n,            # hafif ve ücretsiz kotası geniş
+            "lite" not in n,
+            "preview" not in n and "exp" not in n,
+            n,                       # aynı skorda alfabetik olarak sonuncu = yeni sürüm
+        )
+
+    return max(names, key=score)
+
+
 def gemini_post(data, history):
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         return None
-    model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    model = os.environ.get("GEMINI_MODEL") or pick_gemini_model(key)
+    print(f"Gemini modeli: {model}")
     examples = json.dumps(data["posts"][:6], ensure_ascii=False, indent=1)
     recent = "\n".join(f"- {h['title']}" for h in history[-40:])
     prompt = f"""Sen BotZayba'nın Instagram içerik yazarısın. BotZayba, Binance'te grid stratejisiyle
