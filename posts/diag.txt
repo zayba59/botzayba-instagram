@@ -1,0 +1,30 @@
+== ls
+total 568
+drwxr-xr-x 2 runner runner   4096 Oct 24 08:52 fonts
+-rw-r--r-- 1 runner runner 216494 Oct 24 08:52 logo.png
+-rw-r--r-- 1 runner runner 272666 Oct 24 08:52 logo_original.png
+-rw-r--r-- 1 runner runner  83640 Oct 24 08:52 logo_white.png
+== file
+assets/logo_white.png: PNG image data, 1090 x 741, 8-bit/color RGBA, non-interlaced
+== head
+0000000 211   P   N   G  \r  \n 032  \n  \0  \0  \0  \r   I   H   D   R
+0000020  \0  \0 004   B  \0  \0 002 345  \b 006  \0  \0  \0 300  \v   C
+0000040
+== md5
+ba0b05ddd4e3c2f00a640d25af4c5962  assets/logo.png
+9d2ab7226bf9503b20a19b7f086c48d7  assets/logo_original.png
+6da5e51d9d8bfeb0ce4576cd3106a7bb  assets/logo_white.png
+== git
+100644 58a38073e8106029d2c50cf09a4c3b9fed36149f 0	assets/fonts/Inter-Bold.otf
+100644 66cd95228c0ed187ebe352bf928a4c41fe342827 0	assets/fonts/Inter-ExtraBold.otf
+100644 f44f89adaccfb2d08cef973d7e60a9ccf785376d 0	assets/fonts/Inter-Medium.otf
+100644 2d0bd1d645a9afaa4cf47afc4e1dc38698809f78 0	assets/fonts/Inter-Regular.otf
+100644 52c84550ba03fa5543f14c5cb215b9b2c72946cb 0	assets/fonts/Inter-SemiBold.otf
+100644 5cf1b84d22b6215a4cb42ca983bdcf10aa9c3208 0	assets/fonts/LICENSE-Inter.txt
+100644 477e46c90c24a40bef6793c1c734cbba307d53c9 0	assets/logo.png
+100644 6bf16d58d4d78987314a462999db6fc1f85fe2ec 0	assets/logo_original.png
+100644 08030e7443e0581c7ca27a6fe9f3d96786a06ca7 0	assets/logo_white.png
+== pillow
+13.0.0 True
+== open
+OK (1090, 741) RGBA
