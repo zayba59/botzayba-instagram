@@ -174,9 +174,13 @@ def validate(post):
 def prepare():
     data = load_content()
     state = load_state()
-    if any(h["date"] == TODAY for h in state["history"]):
+    entry = next((h for h in state["history"] if h["date"] == TODAY), None)
+    # Kayıt varsa bile dosyalar yoksa yeniden üret; aksi halde e-posta adımı dosya bulamaz.
+    if entry and (POSTS / f"{TODAY}.json").exists() and (POSTS / f"{TODAY}.jpg").exists():
         print(f"{TODAY} için içerik zaten hazır.")
         return
+    if entry:
+        print(f"{TODAY} kaydı var ama dosyalar eksik — yeniden üretiliyor.")
 
     post, source = None, "bank"
     try:
@@ -197,7 +201,11 @@ def prepare():
     (POSTS / f"{TODAY}.json").write_text(
         json.dumps({**post, "full_caption": caption, "source": source}, ensure_ascii=False, indent=2),
         encoding="utf-8")
-    state["history"].append({"date": TODAY, "title": post["title"].replace("\n", " "), "source": source})
+    record = {"date": TODAY, "title": post["title"].replace("\n", " "), "source": source}
+    if entry:
+        entry.update(record)
+    else:
+        state["history"].append(record)
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Hazır: posts/{TODAY}.jpg ({source}) — {post['title']!r}")
 
