@@ -3,15 +3,19 @@
   python scripts/daily.py prepare   # günün içeriğini seçer/üretir, görseli posts/ altına kaydeder
   python scripts/daily.py publish   # hazırlanan görseli Instagram'a paylaşır
   python scripts/daily.py refresh   # erişim anahtarının ömrünü uzatır
+  python scripts/daily.py notify    # günün gönderisini e-posta ile gönderir
 
 Instagram Login yöntemini kullanır (Facebook Sayfası gerekmez).
 
 Ortam değişkenleri:
   GEMINI_API_KEY   (isteğe bağlı) varsa her gün yapay zekâ ile yeni reklam yazılır
   GEMINI_MODEL     (isteğe bağlı) varsayılan: gemini-2.5-flash
-  IG_ACCESS_TOKEN  Instagram uzun ömürlü erişim anahtarı (scripts/token.py ile alınır)
+  IG_ACCESS_TOKEN  Instagram uzun ömürlü erişim anahtarı (scripts/ig_token.py ile alınır)
   IG_USER_ID       (isteğe bağlı) varsayılan: me
   IMAGE_BASE_URL   görselin herkese açık adresi için önek (GitHub Actions'ta otomatik)
+  SMTP_USER        e-posta gönderimi için Gmail adresi
+  SMTP_PASS        Gmail uygulama şifresi (16 haneli)
+  MAIL_TO          (isteğe bağlı) alıcı; varsayılan SMTP_USER
 """
 import datetime as dt
 import json
@@ -23,7 +27,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(Path(__file__).resolve().parent))  # append: stdlib adlarını gölgelememek için
 from generate import ROOT, load_content, render  # noqa: E402
 
 POSTS = ROOT / "posts"
@@ -214,8 +218,38 @@ def refresh():
     if days < 15:
         raise SystemExit(
             f"DİKKAT: Instagram anahtarının bitmesine {days} gün kaldı. "
-            "scripts/token.py ile yeni anahtar alıp GitHub Secrets'taki "
+            "scripts/ig_token.py ile yeni anahtar alıp GitHub Secrets'taki "
             "IG_ACCESS_TOKEN değerini güncelleyin.")
+
+
+def notify():
+    """Günün görselini ve açıklamasını e-posta ile gönderir."""
+    user, pw = os.environ.get("SMTP_USER"), os.environ.get("SMTP_PASS")
+    if not (user and pw):
+        print("SMTP_USER / SMTP_PASS yok — e-posta atlandı.")
+        return
+    import smtplib
+    from email.message import EmailMessage
+
+    meta = json.loads((POSTS / f"{TODAY}.json").read_text(encoding="utf-8"))
+    img = POSTS / f"{TODAY}.jpg"
+    title = meta["title"].replace("\n", " ")
+
+    msg = EmailMessage()
+    msg["Subject"] = f"BotZayba gönderisi — {TODAY} — {title}"
+    msg["From"], msg["To"] = user, os.environ.get("MAIL_TO") or user
+    msg.set_content(
+        "Bugünün BotZayba gönderisi hazır.\n\n"
+        "1) Ekteki görseli telefonunuza kaydedin\n"
+        "2) Aşağıdaki metni kopyalayın\n"
+        "3) Instagram'da paylaşın\n\n"
+        + "-" * 40 + "\n\n" + meta["full_caption"] + "\n\n" + "-" * 40 + "\n")
+    msg.add_attachment(img.read_bytes(), maintype="image", subtype="jpeg", filename=img.name)
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=60) as smtp:
+        smtp.login(user, pw)
+        smtp.send_message(msg)
+    print(f"E-posta gönderildi: {msg['To']}")
 
 
 def update_github_secret(value):
@@ -253,5 +287,6 @@ def update_github_secret(value):
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    {"prepare": prepare, "publish": publish, "refresh": refresh}.get(
+    {"prepare": prepare, "publish": publish, "refresh": refresh,
+     "notify": notify}.get(
         cmd, lambda: sys.exit(__doc__))()
