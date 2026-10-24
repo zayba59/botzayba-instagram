@@ -2,7 +2,6 @@ name: Günlük Instagram paylaşımı
 
 on:
   schedule:
-    # Her gün 18:00 Türkiye saati (15:00 UTC)
     - cron: "0 15 * * *"
   workflow_dispatch: {}
 
@@ -25,15 +24,17 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-            - name: Günün reklamını hazırla
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - name: Teşhis
         run: |
           ls -l assets/
           file assets/logo_white.png || true
           head -c 16 assets/logo_white.png | od -c | head -2
           python -c "import PIL; from PIL import features; print('Pillow', PIL.__version__, features.check('zlib'))"
-          python scripts/daily.py prepare
+
+      - name: Günün reklamını hazırla
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/daily.py prepare
 
       - name: Görseli depoya kaydet
         id: commit
