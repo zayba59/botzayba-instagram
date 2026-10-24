@@ -24,29 +24,6 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Teşhis
-        run: |
-          mkdir -p posts
-          echo "== ls" > posts/diag.txt
-          ls -l assets/ >> posts/diag.txt 2>&1
-          echo "== file" >> posts/diag.txt
-          file assets/logo_white.png >> posts/diag.txt 2>&1 || true
-          echo "== head" >> posts/diag.txt
-          head -c 32 assets/logo_white.png | od -c >> posts/diag.txt 2>&1
-          echo "== md5" >> posts/diag.txt
-          md5sum assets/*.png >> posts/diag.txt 2>&1
-          echo "== git" >> posts/diag.txt
-          git ls-files -s assets/ >> posts/diag.txt 2>&1
-          echo "== pillow" >> posts/diag.txt
-          python -c "import PIL; from PIL import features; print(PIL.__version__, features.check('zlib'))" >> posts/diag.txt 2>&1
-          echo "== open" >> posts/diag.txt
-          python -c "from PIL import Image; im=Image.open('assets/logo_white.png'); im.load(); print('OK', im.size, im.mode)" >> posts/diag.txt 2>&1 || true
-          cat posts/diag.txt
-          git config user.name "botzayba-bot"
-          git config user.email "botzayba-bot@users.noreply.github.com"
-          git add -f posts/diag.txt
-          git commit -m "Teshis" || true
-          git push || true
 
       - name: Günün reklamını hazırla
         env:
