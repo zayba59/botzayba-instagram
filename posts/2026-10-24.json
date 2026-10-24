@@ -1,14 +1,10 @@
 {
-  "layout": "steps",
-  "kicker": "GRID STRATEJİSİ",
-  "title": "Grid trading nedir?",
-  "items": [
-    "Bir fiyat aralığı belirlenir",
-    "Aralık eşit basamaklara (grid) bölünür",
-    "Her alt basamakta alım emri konur",
-    "Her üst basamakta satış emri konur"
-  ],
-  "caption": "Grid trading, fiyatın belirli bir aralıkta gidip gelmesinden faydalanmayı amaçlayan bir stratejidir.\n\n1) Bir alt ve üst fiyat sınırı belirlenir\n2) Bu aralık eşit basamaklara bölünür\n3) Fiyat düştükçe basamaklarda alım yapılır\n4) Fiyat yükseldikçe basamaklarda satış yapılır\n\nBotZayba bu emirleri senin yerine, kurallara bağlı kalarak yönetir.",
-  "full_caption": "Grid trading, fiyatın belirli bir aralıkta gidip gelmesinden faydalanmayı amaçlayan bir stratejidir.\n\n1) Bir alt ve üst fiyat sınırı belirlenir\n2) Bu aralık eşit basamaklara bölünür\n3) Fiyat düştükçe basamaklarda alım yapılır\n4) Fiyat yükseldikçe basamaklarda satış yapılır\n\nBotZayba bu emirleri senin yerine, kurallara bağlı kalarak yönetir.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
-  "source": "bank"
+  "next_index": 2,
+  "history": [
+    {
+      "date": "2026-10-23",
+      "title": "Piyasa 7/24 açık. Sen değilsin.",
+      "source": "bank"
+    }
+  ]
 }
