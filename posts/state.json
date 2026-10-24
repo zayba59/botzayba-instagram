@@ -1,9 +1,14 @@
 {
-  "next_index": 3,
+  "next_index": 4,
   "history": [
     {
       "date": "2026-10-23",
       "title": "Piyasa 7/24 açık. Sen değilsin.",
+      "source": "bank"
+    },
+    {
+      "date": "2026-10-24",
+      "title": "Fiyat yerinde sayıyor mu?",
       "source": "bank"
     }
   ]
