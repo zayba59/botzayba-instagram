@@ -1,0 +1,9 @@
+{
+  "layout": "statement",
+  "kicker": "RİSK YÖNETİMİ",
+  "title": "Aralık dışına\nçıkılırsa ne olur?",
+  "body": "Fiyat belirlediğin aralığın dışına çıkarsa bot beklemeye geçer. Piyasa hareketlerini takip etmek her zaman önemlidir.",
+  "caption": "Grid stratejisi belirli bir fiyat aralığında en verimli şekilde çalışmak üzere tasarlanmıştır. Peki fiyat bu aralığın dışına çıkarsa ne olur?\n\nEğer fiyat üst sınırın üzerine çıkarsa elindeki varlıklar satışa dönüşebilir, alt sınırın altına inerse bot alım yaparak aralık içinde kalmayı bekleyebilir.\n\nBu yüzden fiyat aralığını belirlerken piyasa dinamiklerini dikkatlice incelemek ve riskleri hesaba katmak gerekir. Planını yaparken her ihtimali göz önünde bulundurmayı unutma.",
+  "full_caption": "Grid stratejisi belirli bir fiyat aralığında en verimli şekilde çalışmak üzere tasarlanmıştır. Peki fiyat bu aralığın dışına çıkarsa ne olur?\n\nEğer fiyat üst sınırın üzerine çıkarsa elindeki varlıklar satışa dönüşebilir, alt sınırın altına inerse bot alım yaparak aralık içinde kalmayı bekleyebilir.\n\nBu yüzden fiyat aralığını belirlerken piyasa dinamiklerini dikkatlice incelemek ve riskleri hesaba katmak gerekir. Planını yaparken her ihtimali göz önünde bulundurmayı unutma.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "gemini"
+}
