@@ -1,0 +1,9 @@
+{
+  "layout": "statement",
+  "kicker": "RİSK YÖNETİMİ",
+  "title": "API anahtarı\ngüvenliği nedir?",
+  "body": "BotZayba emirleri yönetir ancak paran Binance hesabından asla dışarı çıkmaz. Yetkilerini sen belirlersin.",
+  "caption": "Kripto botları kullanırken en çok merak edilen konulardan biri güvenliktir. BotZayba, Binance API üzerinden çalışır ve asla para çekme yetkisi istemez.\n\nAPI anahtarınla yalnızca alım-satım emirleri verme izni tanımlarsın. Yani varlıkların her zaman senin Binance cüzdanında güvende kalır.\n\nSistem sadece senin belirlediğin strateji dahilinde emir iletmekle görevlidir. Kendi güvenliğin için API anahtarlarını kimseyle paylaşmamalısın.",
+  "full_caption": "Kripto botları kullanırken en çok merak edilen konulardan biri güvenliktir. BotZayba, Binance API üzerinden çalışır ve asla para çekme yetkisi istemez.\n\nAPI anahtarınla yalnızca alım-satım emirleri verme izni tanımlarsın. Yani varlıkların her zaman senin Binance cüzdanında güvende kalır.\n\nSistem sadece senin belirlediğin strateji dahilinde emir iletmekle görevlidir. Kendi güvenliğin için API anahtarlarını kimseyle paylaşmamalısın.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "gemini"
+}
