@@ -2,8 +2,15 @@ name: Günlük Instagram paylaşımı
 
 on:
   schedule:
-    # Her gün 08:00 Türkiye saati (05:00 UTC). GitHub birkaç dakika gecikebilir.
-    - cron: "0 5 * * *"
+    # Hedef: her gün 09:00 Türkiye saati.
+    #
+    # GitHub zamanlanmış işleri garanti etmiyor; ücretsiz hesaplarda saatlerce
+    # gecikebiliyor (bu depoda ölçülen gecikme 4-6 saat). Tek bir cron bu yüzden
+    # hedefi tutturamaz. Onun yerine gün içine birkaç deneme serpiştiriyoruz;
+    # aşağıdaki "kapi" işi, Türkiye saati 09:00'u geçmeden hiçbirinin paylaşım
+    # yapmasına izin vermiyor ve günde yalnızca bir kez geçiş veriyor.
+    # Dakika 23: tam saat başı en kalabalık an, oradan kaçınmak gecikmeyi azaltıyor.
+    - cron: "23 23,1,3,5,6,7 * * *"
   workflow_dispatch: {}   # Actions sekmesinden elle çalıştırmak için
 
 permissions:
@@ -14,7 +21,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Sırası gelmiş mi? Gelmediyse asıl iş hiç başlamaz (saniyeler sürer).
+  kapi:
+    runs-on: ubuntu-latest
+    outputs:
+      calistir: ${{ steps.karar.outputs.calistir }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: karar
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "::notice::Elle başlatıldı — saat koşulu aranmıyor."
+            echo "calistir=evet" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          bugun=$(TZ=Europe/Istanbul date +%F)
+          saat=$(TZ=Europe/Istanbul date +%H%M)
+          son=$(cat .gunluk-son 2>/dev/null || echo "-")
+          if [ "$son" = "$bugun" ]; then
+            echo "::notice::Bugün ($bugun) zaten paylaşıldı — atlanıyor."
+            echo "calistir=hayir" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if [ "$((10#$saat))" -lt 900 ]; then
+            echo "::notice::Türkiye saati $saat — 09:00'dan erken, sonraki denemeye bırakılıyor."
+            echo "calistir=hayir" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "::notice::Türkiye saati $saat — paylaşım sırası geldi."
+          echo "calistir=evet" >> "$GITHUB_OUTPUT"
+
   post:
+    needs: kapi
+    if: needs.kapi.outputs.calistir == 'evet'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -64,5 +100,7 @@ jobs:
 
       - name: Paylaşım kaydını güncelle
         run: |
-          git add posts/state.json
+          # .gunluk-son: kapı işinin "bugün yapıldı mı" diye baktığı işaret dosyası.
+          TZ=Europe/Istanbul date +%F > .gunluk-son
+          git add posts/state.json .gunluk-son
           git diff --cached --quiet || (git commit -m "Paylaşım kaydı: $(date +%F)" && git push)
