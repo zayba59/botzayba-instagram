@@ -73,6 +73,8 @@ def sure(yol: Path) -> float:
         r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
                             "-of", "csv=p=0", str(yol)], capture_output=True, text=True)
         return float(r.stdout.strip() or 0)
+    except FileNotFoundError:
+        return 0.0          # ffprobe yoksa süre bilinmez, iş yine de sürsün
     except Exception:
         return 0.0
 
@@ -115,8 +117,12 @@ def main():
         liste = klasor / "liste.txt"
         liste.write_text("".join(f"file '{p.name}'\n" for p in uretilen), encoding="utf-8")
         tam = klasor / "tam.mp3"
-        subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-f", "concat",
-                        "-safe", "0", "-i", str(liste), "-c", "copy", str(tam)], check=False)
+        try:
+            subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-f", "concat",
+                            "-safe", "0", "-i", str(liste), "-c", "copy", str(tam)], check=False)
+        except FileNotFoundError:
+            # ffmpeg yoksa bölümler yine kullanılabilir; birleştirme şart değil.
+            bildir("warning", "Birleştirme", "ffmpeg bulunamadı, bölümler ayrı kaldı")
         liste.unlink(missing_ok=True)
         if tam.exists():
             bildir("notice", "Birleştirildi", f"tam.mp3 · {sure(tam):.1f} saniye")

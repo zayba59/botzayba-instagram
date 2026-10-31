@@ -45,6 +45,11 @@ jobs:
 
       - run: pip install "edge-tts>=7.0"
 
+      - name: ffmpeg kur
+        # Runner görüntülerinde ffmpeg artık hazır gelmiyor; süre ölçmek ve
+        # bölümleri birleştirmek için gerekiyor.
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: Metni dosyaya yaz
         # Metin doğrudan komut satırına geçirilirse tırnak ve satır sonları bozuluyor.
         env:
