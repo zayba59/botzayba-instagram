@@ -1,0 +1,74 @@
+name: Metni seslendir
+
+# Actions sekmesinden elle çalıştırılır: metni yazarsın, Ahmet okur, mp3 indirirsin.
+# Bilgisayarın açık olmak zorunda değil; telefondan da tetiklenebilir.
+# Bu depo herkese açık olduğu için Actions süresi sayılmıyor.
+
+on:
+  workflow_dispatch:
+    inputs:
+      metin:
+        description: "Okunacak metin (boş satır bırakırsan her bölüm ayrı dosya olur)"
+        required: true
+      ses:
+        description: "Ses"
+        type: choice
+        default: "tr-TR-AhmetNeural"
+        options:
+          - tr-TR-AhmetNeural
+          - tr-TR-EmelNeural
+      hiz:
+        description: "Konuşma hızı — örn. -10% daha ağır, +10% daha hızlı"
+        required: false
+        default: "+0%"
+      ad:
+        description: "Klasör adı (boş bırakırsan tarih-saat olur)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seslendir
+  cancel-in-progress: false
+
+jobs:
+  sesle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install "edge-tts>=7.0"
+
+      - name: Metni dosyaya yaz
+        # Metin doğrudan komut satırına geçirilirse tırnak ve satır sonları bozuluyor.
+        env:
+          METIN: ${{ inputs.metin }}
+        run: printf '%s' "$METIN" > /tmp/metin.txt
+
+      - name: Seslendir
+        run: |
+          python scripts/sesle.py \
+            --dosya /tmp/metin.txt \
+            --ses "${{ inputs.ses }}" \
+            --hiz "${{ inputs.hiz }}" \
+            --ad "${{ inputs.ad }}"
+
+      - name: Depoya kaydet
+        run: |
+          git config user.name "botzayba-bot"
+          git config user.email "botzayba-bot@users.noreply.github.com"
+          git add seslendirme/
+          git diff --cached --quiet || (git commit -m "Seslendirme: $(date +%F_%H%M)" && git push)
+
+      - name: İndirilebilir dosya olarak da sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: seslendirme
+          path: seslendirme/
+          retention-days: 30
