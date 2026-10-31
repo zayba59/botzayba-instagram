@@ -106,6 +106,11 @@ def main():
     for i, bolum in enumerate(bolumler, start=1):
         hedef = klasor / f"{i:02d}.mp3"
         if not seslendir(bolum, args.ses, hiz, hedef):
+            # Boş dosya ve boş klasör geride kalmasın; depoya sızıyor.
+            hedef.unlink(missing_ok=True)
+            for p in sorted(klasor.glob("*")):
+                p.unlink(missing_ok=True)
+            klasor.rmdir()
             bildir("error", "Ses", f"{i}. bölüm üretilemedi — üç deneme de başarısız")
             sys.exit(1)
         s = sure(hedef)
