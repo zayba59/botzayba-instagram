@@ -53,11 +53,13 @@ jobs:
 
       - name: Seslendir
         run: |
+          # Eşittirli yazım şart: "-10%" gibi değerler boşlukla verilince
+          # argparse onu seçenek sanıp "expected one argument" diye düşüyor.
           python scripts/sesle.py \
-            --dosya /tmp/metin.txt \
-            --ses "${{ inputs.ses }}" \
-            --hiz "${{ inputs.hiz }}" \
-            --ad "${{ inputs.ad }}"
+            --dosya=/tmp/metin.txt \
+            --ses="${{ inputs.ses }}" \
+            --hiz="${{ inputs.hiz }}" \
+            --ad="${{ inputs.ad }}"
 
       - name: Depoya kaydet
         run: |
