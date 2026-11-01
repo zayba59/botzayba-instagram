@@ -1,0 +1,14 @@
+{
+  "layout": "tips",
+  "kicker": "STRATEJİ İPUCU",
+  "title": "Kaç grid basamağı\nseçmelisin?",
+  "items": [
+    "Çok grid: Sık işlem, yüksek komisyon",
+    "Az grid: Seyrek işlem, geniş marj",
+    "Borsa komisyonlarını hesaba kat",
+    "Bütçeni basamak sayısına göre böl"
+  ],
+  "caption": "Grid stratejisi kurarken en sık sorulan sorulardan biri: \"Aralığı kaç basamağa bölmeliyim?\"\n\nBasamak sayısını artırmak kulağa cazip gelebilir çünkü bot daha sık al-sat yapar. Ancak basamaklar birbirine çok yaklaştığında, işlem başına oluşan küçük farklar borsa komisyonuna gidebilir.\n\nBasamak sayısını az tuttuğunda ise işlemler seyrekleşir, fakat her adımın aralığı daha belirgin olur.\n\nÖnemli olan dengeyi kurmak ve bütçeni basamaklara bölerken minimum emir tutarlarını hesaba katmaktır.",
+  "full_caption": "Grid stratejisi kurarken en sık sorulan sorulardan biri: \"Aralığı kaç basamağa bölmeliyim?\"\n\nBasamak sayısını artırmak kulağa cazip gelebilir çünkü bot daha sık al-sat yapar. Ancak basamaklar birbirine çok yaklaştığında, işlem başına oluşan küçük farklar borsa komisyonuna gidebilir.\n\nBasamak sayısını az tuttuğunda ise işlemler seyrekleşir, fakat her adımın aralığı daha belirgin olur.\n\nÖnemli olan dengeyi kurmak ve bütçeni basamaklara bölerken minimum emir tutarlarını hesaba katmaktır.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "gemini"
+}
