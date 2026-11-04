@@ -1,5 +1,5 @@
 {
-  "next_index": 0,
+  "next_index": 1,
   "history": [
     {
       "date": "2026-10-24",
@@ -54,6 +54,11 @@
       "title": "Piyasanın yönü her zaman bilinmez",
       "source": "gemini",
       "media_id": "18043404527834218"
+    },
+    {
+      "date": "2026-11-04",
+      "title": "Piyasa 7/24 açık. Sen değilsin.",
+      "source": "bank"
     }
   ]
 }
