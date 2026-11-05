@@ -1,5 +1,5 @@
 {
-  "next_index": 1,
+  "next_index": 2,
   "history": [
     {
       "date": "2026-10-24",
@@ -60,6 +60,11 @@
       "title": "Piyasa 7/24 açık. Sen değilsin.",
       "source": "bank",
       "media_id": "18126660859918609"
+    },
+    {
+      "date": "2026-11-05",
+      "title": "Grid trading nedir?",
+      "source": "bank"
     }
   ]
 }
