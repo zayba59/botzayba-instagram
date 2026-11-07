@@ -9,7 +9,7 @@ on:
     # hedefi tutturamaz. Onun yerine gün içine birkaç deneme serpiştiriyoruz;
     # aşağıdaki "kapi" işi, Türkiye saati 09:00'u geçmeden hiçbirinin paylaşım
     # yapmasına izin vermiyor ve günde yalnızca bir kez geçiş veriyor.
-    # Dakika 23: tam saat başı en kalabalık an, oradan kaçınmak gecikmeyi azaltıyor.
+    # 06:04-08:49 UTC (09:04-11:49 TR) sık denemeler, gün içinde iki ek deneme.
     - cron: "4,19,34,49 6-8 * * *"
     - cron: "23 9,11 * * *"
   workflow_dispatch: {}   # Actions sekmesinden elle çalıştırmak için
