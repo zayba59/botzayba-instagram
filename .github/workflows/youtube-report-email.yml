@@ -1,0 +1,26 @@
+name: YouTube günlük video raporu e-postası
+on:
+  repository_dispatch:
+    types: [youtube-daily-report]
+permissions:
+  contents: read
+concurrency:
+  group: youtube-report-email
+  cancel-in-progress: false
+jobs:
+  report:
+    if: github.event.client_payload.source == 'zayba59/botzayba-youtube'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: E-postayı mevcut SMTP hesabından gönder
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          VIDEO_ID: ${{ github.event.client_payload.video_id }}
+          VIDEO_TITLE: ${{ github.event.client_payload.title }}
+          VIDEO_DATE: ${{ github.event.client_payload.date }}
+          VIDEO_PRIVACY: ${{ github.event.client_payload.privacy }}
+        run: python scripts/youtube_report_mail.py
