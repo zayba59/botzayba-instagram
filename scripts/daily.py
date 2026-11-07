@@ -25,6 +25,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import unicodedata
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))  # append: stdlib adlarını gölgelememek için
@@ -57,6 +58,46 @@ def http_json(url, data=None, method=None):
             return json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"HTTP {e.code}: {e.read().decode(errors='replace')[:500]}") from None
+
+
+# Hem AI hem de hazır içerik bankası için geçmiş başlık/konu kontrolü.
+# Aynı günün daha önce yayımlanmış kaydı değiştirilmez.
+TOPIC_RULES = (
+    ("strategy-limits", r"\bstrateji\b.*\b(uymaz|yetmez|farkli|degis|kosul)\w*\b|\btek\b.*\bstrateji\b"),
+    ("market-conditions", r"\bpiyasa\w*\b.*\b(kosul|ayni|degis|farkli|yon)\w*\b"),
+    ("api-security", r"\bapi\b.*\b(anahtar|guven|izin)\w*\b"),
+    ("grid-range", r"\baralik\b.*\b(dis|sinir|fiyat)\w*\b"),
+)
+
+
+def title_key(title):
+    value = unicodedata.normalize("NFKD", str(title or "").casefold().replace("ı", "i"))
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    return re.sub(r"[^a-z0-9]+", " ", value).strip()
+
+
+def title_topic(key):
+    return next((name for name, pattern in TOPIC_RULES if re.search(pattern, key)), "")
+
+
+def duplicate_title(title, history):
+    key = title_key(title)
+    if not key:
+        return True
+    topic = title_topic(key)
+    stopwords = {"bot", "grid", "bir", "her", "ve", "icin", "nasil", "nedir", "tek"}
+    words = set(key.split()) - stopwords
+    for entry in history:
+        old = title_key(entry.get("title", ""))
+        if not old:
+            continue
+        if key == old or (topic and topic == title_topic(old)):
+            return True
+        old_words = set(old.split()) - stopwords
+        overlap = words & old_words
+        if len(overlap) >= 2 and len(overlap) / len(words | old_words) >= 0.52:
+            return True
+    return False
 
 
 # ---------- yapay zekâ ile içerik ----------
@@ -189,10 +230,19 @@ def prepare():
             source = "gemini"
     except Exception as e:  # yapay zekâ başarısız olursa içerik bankasına düş
         print(f"Gemini kullanılamadı, içerik bankası kullanılıyor: {e}")
+    if post and duplicate_title(post["title"], state["history"]):
+        print("Gemini benzer konu üretti; tekrar paylaşılmaması için hazır içerik bankası deneniyor.")
+        post = None
     if not post:
-        idx = state["next_index"] % len(data["posts"])
-        post = data["posts"][idx]
-        state["next_index"] = idx + 1
+        for offset in range(len(data["posts"])):
+            idx = (state["next_index"] + offset) % len(data["posts"])
+            candidate = data["posts"][idx]
+            if not duplicate_title(candidate["title"], state["history"]):
+                post = candidate
+                state["next_index"] = idx + 1
+                break
+        if not post:
+            raise RuntimeError("Hazır içerik bankasında tekrar etmeyen konu kalmadı; paylaşım durduruldu.")
 
     POSTS.mkdir(exist_ok=True)
     seed = len(state["history"])
@@ -214,8 +264,7 @@ def publish():
     token = os.environ.get("IG_ACCESS_TOKEN")
     base = os.environ.get("IMAGE_BASE_URL", "").rstrip("/")
     if not (token and base):
-        print("IG_ACCESS_TOKEN / IMAGE_BASE_URL eksik — paylaşım atlandı (deneme modu).")
-        return
+        raise RuntimeError("IG_ACCESS_TOKEN / IMAGE_BASE_URL eksik; paylaşım yapılmadı.")
     uid = os.environ.get("IG_USER_ID") or "me"
     meta = json.loads((POSTS / f"{TODAY}.json").read_text(encoding="utf-8"))
     state = load_state()
@@ -264,6 +313,8 @@ def refresh():
         return
     new_token, days = res.get("access_token", token), int(res.get("expires_in", 0)) // 86400
     print(f"Anahtar yenilendi, {days} gün geçerli.")
+    if not os.environ.get("GH_TOKEN"):
+        print("::warning title=Instagram Token::GH_TOKEN bulunamadı; yenilenen anahtar GitHub Secrets\u0027a kaydedilemiyor.")
     if update_github_secret(new_token):
         return
     if days < 15:
