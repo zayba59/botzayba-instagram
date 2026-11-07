@@ -12,7 +12,7 @@ def main():
         raise ValueError("Geçersiz YouTube video kimliği; rapor gönderilmedi")
     title = " ".join(os.environ.get("VIDEO_TITLE", "").split())[:180]
     date = os.environ.get("VIDEO_DATE", "")
-    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", date):
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
         date = "Tarih doğrulanamadı"
     privacy = os.environ.get("VIDEO_PRIVACY", "").strip().lower()
     if privacy not in {"public", "unlisted", "private"}:
@@ -29,10 +29,10 @@ def main():
     msg["From"] = user
     msg["To"] = recipient
     msg.set_content(
-        f"Günlük YouTube videosu başarıyla yüklendi.\\n\\n"
-        f"Tarih: {date}\\nBaşlık: {title}\\nGörünürlük: {privacy}\\n"
-        f"Video: https://www.youtube.com/shorts/{video_id}\\n\\n"
-        "Bu e-posta GitHub'daki botzayba-instagram otomasyonundan gönderildi.\\n"
+        f"Günlük YouTube videosu başarıyla yüklendi.\n\n"
+        f"Tarih: {date}\nBaşlık: {title}\nGörünürlük: {privacy}\n"
+        f"Video: https://www.youtube.com/shorts/{video_id}\n\n"
+        "Bu e-posta GitHub'daki botzayba-instagram otomasyonundan gönderildi.\n"
     )
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=45, context=ssl.create_default_context()) as smtp:
         smtp.login(user, password)
