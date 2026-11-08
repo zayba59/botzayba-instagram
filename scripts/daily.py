@@ -34,7 +34,14 @@ from generate import ROOT, load_content, render  # noqa: E402
 POSTS = ROOT / "posts"
 STATE = POSTS / "state.json"
 GRAPH = "https://graph.instagram.com/v23.0"
-TODAY = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date().isoformat()  # Türkiye saati
+CALENDAR_DAY = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date().isoformat()  # Türkiye saati
+# A manually dispatched daily-post must have a separate content key.
+# This preserves the scheduled date slot and its publication receipt.
+MANUAL_RUN = (
+    os.environ.get("GITHUB_RUN_ID", "").strip()
+    if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch" else ""
+)
+TODAY = f"manual-{CALENDAR_DAY}-{MANUAL_RUN}" if MANUAL_RUN else CALENDAR_DAY
 
 # Yapay zekânın yazdığı metinde görmek istemediğimiz vaatler
 FORBIDDEN = [r"garanti", r"kesin kazan", r"\d+\s*%", r"%\s*\d+", r"zengin", r"pasif gelir", r"risksiz"]
