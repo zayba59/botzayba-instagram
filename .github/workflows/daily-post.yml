@@ -77,6 +77,15 @@ jobs:
           git push
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Günlük Instagram yayın girişimini kaydet
+        run: |
+          python scripts/daily.py reserve
+          git add posts/state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Günlük Instagram yayın rezervasyonu"
+            git push origin HEAD:main
+          fi
+
       - name: Instagram'a paylaş
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
@@ -89,7 +98,7 @@ jobs:
           git add posts/state.json
           if ! git diff --cached --quiet; then
             git commit -m "Instagram yayın kimliğini kaydet: $(TZ=Europe/Istanbul date +%F)"
-            git push
+            git push origin HEAD:main
           fi
 
       - name: E-posta gönder
