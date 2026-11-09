@@ -1,5 +1,5 @@
 {
-  "next_index": 2,
+  "next_index": 3,
   "history": [
     {
       "date": "2026-10-24",
@@ -84,6 +84,11 @@
       "title": "Aşırı riskten nasıl kaçınılır?",
       "source": "gemini",
       "media_id": "17974379607187037"
+    },
+    {
+      "date": "2026-11-09",
+      "title": "Duygular değil, kurallar.",
+      "source": "bank"
     }
   ]
 }
