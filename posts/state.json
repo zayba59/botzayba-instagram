@@ -1,5 +1,5 @@
 {
-  "next_index": 3,
+  "next_index": 4,
   "history": [
     {
       "date": "2026-10-24",
@@ -102,6 +102,11 @@
       "title": "Stop-loss neden gerekli?",
       "source": "gemini",
       "media_id": "18114002606239617"
+    },
+    {
+      "date": "2026-11-12",
+      "title": "Fiyat yerinde sayıyor mu?",
+      "source": "bank"
     }
   ]
 }
