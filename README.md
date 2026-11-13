@@ -1,11 +1,11 @@
 # BotZayba – Otomatik Günlük Instagram Paylaşımı
 
-Her gün saat **18:00'de (Türkiye saati)**:
+Her gün **Türkiye saati 09.00'dan sonra**, GitHub Actions'ın çalıştırdığı ilk uygun denemede (GitHub yoğunluğuna göre gecikebilir):
 1. O günün BotZayba reklamını hazırlar (Gemini yapay zekâsı ile yeni metin, yoksa hazır 30 içerikten sıradaki),
 2. Logolu 1080×1350 reklam görselini tasarlar,
 3. Instagram'a paylaşır.
 
-Tamamen **ücretsiz** çalışır (GitHub Actions + Instagram resmi API + Gemini ücretsiz kotası).
+GitHub Actions + Instagram resmi API + Gemini kullanır. **GitHub Actions ve diğer servislerin kullanım kotaları geçerlidir; ücretsiz kullanım garanti değildir.**
 
 ---
 
@@ -70,8 +70,9 @@ Repository access: sadece `botzayba-instagram`. Permissions → Repository permi
 Yeşil tik çıkınca Instagram'ı kontrol edin. Bundan sonra her gün kendiliğinden paylaşır.
 
 ## Ayarlar
-- **Paylaşım saati:** `.github/workflows/daily-post.yml` içindeki `cron: "0 15 * * *"` (UTC).
-  Türkiye saati = UTC + 3. Örn. 12:00 için `"0 9 * * *"`.
+- **Paylaşım zamanı:** `.github/workflows/daily-post.yml` içindeki birden fazla `schedule` cron'u, Türkiye saati 09.00 sonrasında deneme yapar. GitHub zamanlanmış işleri geciktirebilir; **sabit 09.00 paylaşım garantisi yoktur**.
+- **Günde bir kez kontrolü:** `.gunluk-son` dosyası, o gün tamamlanan yayını işaretler. Gün içindeki ek zamanlanmış denemelerde `post` işinin atlanması, daha önce paylaşım yapıldıysa normaldir.
+- **Doğrulama:** Actions ekranında sadece genel yeşil sonuca değil, aynı günün `post` işinin ve `Instagram'a paylaş` adımının başarılı olup olmadığına bakılmalıdır.
 - **Kullanıcı adı, uyarı metni, hashtag'ler:** `content.json` → `brand`.
 - **Hazır içerikler:** `content.json` → `posts` (ekle, sil, düzenle).
 - **Logo:** `assets/logo_white.png`.
@@ -87,3 +88,11 @@ python scripts/generate.py --preview   # tüm içeriklerin görselleri preview/ 
   Instagram ve Türkiye'deki kripto düzenlemeleri açısından bu önemlidir.
 - GitHub, 60 gün boyunca hiç işlem olmayan depolarda zamanlanmış görevleri durdurabilir.
   Program her gün depoya kayıt eklediği için normalde sorun olmaz.
+
+## Depolama ve güvenli bakım
+
+- Günlük video üretimi, YouTube deposunun `gunluk-video.yml` işinden Instagram deposundaki `reels/` klasörüne dosya gönderir. Bu iş **çalışma ağacında** en yeni 7 `.mp4` dosyasını tutacak şekilde tasarlanmıştır.
+- Git'te bir video dosyasının son commit'ten silinmesi, o dosyanın eski Git geçmişindeki kopyalarını otomatik olarak kaldırmaz. Dolayısıyla depo boyutu video paylaşımı devam ettikçe artabilir.
+- `tanitim/` klasöründeki videoları veya `reels/` geçmişini **otomatik temizlemeyin**: aktif URL'ler, yayın bağlantıları ve geçmiş kayıtları etkilenebilir. Önce güvenli arşivleme/taşıma planı, bağlantı kontrolleri ve geri dönüş yöntemi hazırlanmalıdır.
+- Her ay GitHub'da **Settings → Billing and licensing / Billing** üzerinden Actions dakikalarını ve artifact/cache kullanımını kontrol edin. Depo boyutu, hesabın toplam Actions kullanım yüzdesi değildir.
+- Bu belge yalnızca mevcut işleyişi açıklar; yayımlama kodunda, zamanlamada ve Git geçmişinde değişiklik yapmaz.
