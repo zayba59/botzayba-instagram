@@ -1,0 +1,14 @@
+{
+  "layout": "tips",
+  "kicker": "GÖZDEN KAÇANLAR",
+  "title": "Komisyon maliyetini\nhesaba kattın mı?",
+  "items": [
+    "Çok sık işlem, çok komisyon demektir",
+    "Grid aralığı komisyonu karşılamalıdır",
+    "Küçük adımlar maliyeti katlayabilir",
+    "Net dengeyi işlem giderleri belirler"
+  ],
+  "caption": "Grid botu kurarken en sık gözden kaçan detaylardan biri borsa komisyonlarıdır.\n\nÇok fazla basamak açtığında bot daha sık al-sat yapabilir. Ancak her işlemde bir miktar komisyon ödersin. Eğer iki basamak arasındaki kâr marjı ödenen komisyondan küçükse, bot işlem yaptıkça bütçen eriyebilir.\n\nBu yüzden grid aralığını belirlerken borsa işlem ücretlerini mutlaka hesaba katmalı ve basamak aralıklarını buna göre ayarlamalısın.\n\nStratejini kurarken maliyetleri unutma, planını sağlam yap. Takipte kal, birlikte öğrenmeye devam edelim.",
+  "full_caption": "Grid botu kurarken en sık gözden kaçan detaylardan biri borsa komisyonlarıdır.\n\nÇok fazla basamak açtığında bot daha sık al-sat yapabilir. Ancak her işlemde bir miktar komisyon ödersin. Eğer iki basamak arasındaki kâr marjı ödenen komisyondan küçükse, bot işlem yaptıkça bütçen eriyebilir.\n\nBu yüzden grid aralığını belirlerken borsa işlem ücretlerini mutlaka hesaba katmalı ve basamak aralıklarını buna göre ayarlamalısın.\n\nStratejini kurarken maliyetleri unutma, planını sağlam yap. Takipte kal, birlikte öğrenmeye devam edelim.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "gemini"
+}
