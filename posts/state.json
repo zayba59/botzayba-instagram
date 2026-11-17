@@ -1,5 +1,5 @@
 {
-  "next_index": 4,
+  "next_index": 5,
   "history": [
     {
       "date": "2026-10-24",
@@ -132,6 +132,11 @@
       "title": "Küçük adımlarla başla.",
       "source": "gemini",
       "media_id": "18140837998733324"
+    },
+    {
+      "date": "2026-11-17",
+      "title": "Doğru aralık nasıl seçilir?",
+      "source": "bank"
     }
   ]
 }
