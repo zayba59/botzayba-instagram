@@ -1,5 +1,5 @@
 {
-  "next_index": 5,
+  "next_index": 6,
   "history": [
     {
       "date": "2026-10-24",
@@ -144,6 +144,11 @@
       "title": "Tüm sermayeyi tek yere bağlama",
       "source": "gemini",
       "media_id": "18135031951663770"
+    },
+    {
+      "date": "2026-11-19",
+      "title": "4 adımda BotZayba",
+      "source": "bank"
     }
   ]
 }
