@@ -1,5 +1,5 @@
 {
-  "next_index": 6,
+  "next_index": 8,
   "history": [
     {
       "date": "2026-10-24",
@@ -150,6 +150,11 @@
       "title": "4 adımda BotZayba",
       "source": "bank",
       "media_id": "18088417358708476"
+    },
+    {
+      "date": "2026-11-20",
+      "title": "Sabır bir strateji. Otomasyon bir araç.",
+      "source": "bank"
     }
   ]
 }
