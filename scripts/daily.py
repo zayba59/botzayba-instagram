@@ -34,7 +34,14 @@ from generate import ROOT, load_content, render  # noqa: E402
 POSTS = ROOT / "posts"
 STATE = POSTS / "state.json"
 GRAPH = "https://graph.instagram.com/v23.0"
-TODAY = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date().isoformat()  # Türkiye saati
+CALENDAR_DAY = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date().isoformat()  # Türkiye saati
+# A manually dispatched daily-post must have a separate content key.
+# This preserves the scheduled date slot and its publication receipt.
+MANUAL_RUN = (
+    os.environ.get("GITHUB_RUN_ID", "").strip()
+    if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch" else ""
+)
+TODAY = f"manual-{CALENDAR_DAY}-{MANUAL_RUN}" if MANUAL_RUN else CALENDAR_DAY
 
 # Yapay zekânın yazdığı metinde görmek istemediğimiz vaatler
 FORBIDDEN = [r"garanti", r"kesin kazan", r"\d+\s*%", r"%\s*\d+", r"zengin", r"pasif gelir", r"risksiz"]
@@ -260,6 +267,26 @@ def prepare():
     print(f"Hazır: posts/{TODAY}.jpg ({source}) — {post['title']!r}")
 
 
+def reserve_publish():
+    """Persist a fail-closed daily intent before calling Instagram's publish API."""
+    state = load_state()
+    entry = next((h for h in state["history"] if h["date"] == TODAY), None)
+    if not entry:
+        raise RuntimeError("Daily post has not been prepared")
+    if entry.get("media_id"):
+        print("Daily image already published; no new reservation needed.")
+        return
+    if entry.get("publish_state") == "pending":
+        raise RuntimeError("Prior publish attempt is unresolved; reconcile with Instagram before retrying")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    attempt = os.environ.get("GITHUB_RUN_ATTEMPT")
+    if not run_id or not attempt:
+        raise RuntimeError("GitHub run identity required for publication reservation")
+    entry.update({"publish_state": "pending", "publish_run": run_id, "publish_attempt": attempt})
+    STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("Daily Instagram publish reserved in persistent state")
+
+
 def publish():
     token = os.environ.get("IG_ACCESS_TOKEN")
     base = os.environ.get("IMAGE_BASE_URL", "").rstrip("/")
@@ -272,6 +299,10 @@ def publish():
     if entry.get("media_id"):
         print("Bugünün gönderisi zaten paylaşılmış.")
         return
+    if (entry.get("publish_state"), entry.get("publish_run"), entry.get("publish_attempt")) != (
+        "pending", os.environ.get("GITHUB_RUN_ID"), os.environ.get("GITHUB_RUN_ATTEMPT")
+    ):
+        raise RuntimeError("Publish reservation missing or belongs to another run; retry blocked")
 
     image_url = f"{base}/posts/{TODAY}.jpg"
     print("Görsel adresi:", image_url)
@@ -292,6 +323,7 @@ def publish():
     q = urllib.parse.urlencode({"creation_id": container, "access_token": token})
     media_id = http_json(f"{GRAPH}/{uid}/media_publish?{q}", method="POST")["id"]
     entry["media_id"] = media_id
+    entry["publish_state"] = "published"
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Paylaşıldı! media_id={media_id}")
 
@@ -417,6 +449,6 @@ def update_github_secret(value):
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    {"prepare": prepare, "publish": publish, "refresh": refresh,
+    {"prepare": prepare, "reserve": reserve_publish, "publish": publish, "refresh": refresh,
      "notify": notify}.get(
         cmd, lambda: sys.exit(__doc__))()

@@ -77,12 +77,29 @@ jobs:
           git push
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
+      - name: Günlük Instagram yayın girişimini kaydet
+        run: |
+          python scripts/daily.py reserve
+          git add posts/state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Günlük Instagram yayın rezervasyonu"
+            git push origin HEAD:main
+          fi
+
       - name: Instagram'a paylaş
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IMAGE_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ steps.commit.outputs.sha }}
         run: python scripts/daily.py publish
+
+      - name: Paylaşım kimliğini hemen kaydet
+        run: |
+          git add posts/state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Instagram yayın kimliğini kaydet: $(TZ=Europe/Istanbul date +%F)"
+            git push origin HEAD:main
+          fi
 
       - name: E-posta gönder
         if: always()
@@ -102,6 +119,10 @@ jobs:
       - name: Paylaşım kaydını güncelle
         run: |
           # .gunluk-son: kapı işinin "bugün yapıldı mı" diye baktığı işaret dosyası.
-          TZ=Europe/Istanbul date +%F > .gunluk-son
-          git add posts/state.json .gunluk-son
+          # Elle başlatılan gönderiler planlı günlük gönderiyi engellemez.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            TZ=Europe/Istanbul date +%F > .gunluk-son
+            git add .gunluk-son
+          fi
+          git add posts/state.json
           git diff --cached --quiet || (git commit -m "Paylaşım kaydı: $(date +%F)" && git push)
