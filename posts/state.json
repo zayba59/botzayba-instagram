@@ -1,5 +1,5 @@
 {
-  "next_index": 8,
+  "next_index": 9,
   "history": [
     {
       "date": "2026-10-24",
@@ -168,6 +168,11 @@
       "title": "Riskleri açıkça konuşalım.",
       "source": "gemini",
       "media_id": "18152332597559737"
+    },
+    {
+      "date": "2026-11-23",
+      "title": "Bota bile körü körüne güvenme",
+      "source": "bank"
     }
   ]
 }
