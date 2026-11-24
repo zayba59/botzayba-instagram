@@ -1,0 +1,14 @@
+{
+  "layout": "steps",
+  "kicker": "ÖRNEKLE ANLAYALIM",
+  "title": "Bir grid döngüsü",
+  "items": [
+    "Fiyat bir basamak düşer → alım",
+    "Fiyat bir basamak yükselir → satış",
+    "Aradaki fark döngünün marjıdır",
+    "Döngü aralık içinde tekrarlanır"
+  ],
+  "caption": "Grid trading'de her basamak küçük bir al-sat döngüsüdür.\n\nFiyat bir basamak düşünce bot alır, bir basamak yükselince satar. Basamaklar arasındaki fark, işlem ücretleri düşüldükten sonra o döngünün marjıdır.\n\nNot: Fiyat aralığın altına sert düşerse elinde değeri düşmüş coin kalabilir. Strateji risksiz değildir.",
+  "full_caption": "Grid trading'de her basamak küçük bir al-sat döngüsüdür.\n\nFiyat bir basamak düşünce bot alır, bir basamak yükselince satar. Basamaklar arasındaki fark, işlem ücretleri düşüldükten sonra o döngünün marjıdır.\n\nNot: Fiyat aralığın altına sert düşerse elinde değeri düşmüş coin kalabilir. Strateji risksiz değildir.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "bank"
+}
