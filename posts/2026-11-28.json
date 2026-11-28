@@ -1,0 +1,14 @@
+{
+  "layout": "tips",
+  "kicker": "STRATEJİ NOTU",
+  "title": "İşlem çifti seçimi\nneden önemli?",
+  "items": [
+    "Derinliği olan coin'leri tercih et",
+    "Yüksek volatilite risk getirebilir",
+    "Tanıdığın ve bildiğin varlıklarla başla",
+    "Likiditeyi mutlaka göz önünde bulundur"
+  ],
+  "caption": "Grid botu kurarken ilk sorulardan biri hangi coin'le başlanacağıdır. Her varlık aynı hareket karakteristiğine sahip değildir.\n\nDerinliği, yani likiditesi yüksek olan işlem çiftleri, emirlerin gerçekleşme sürecinde daha avantajlı olabilir. Çok düşük hacimli coin'lerde ise ani hareketler planı zorlaştırabilir.\n\nStratejini kurmadan önce işlem yapacağın varlığı yakından tanımak ve piyasa koşullarını incelemek her zaman iyi bir başlangıçtır.",
+  "full_caption": "Grid botu kurarken ilk sorulardan biri hangi coin'le başlanacağıdır. Her varlık aynı hareket karakteristiğine sahip değildir.\n\nDerinliği, yani likiditesi yüksek olan işlem çiftleri, emirlerin gerçekleşme sürecinde daha avantajlı olabilir. Çok düşük hacimli coin'lerde ise ani hareketler planı zorlaştırabilir.\n\nStratejini kurmadan önce işlem yapacağın varlığı yakından tanımak ve piyasa koşullarını incelemek her zaman iyi bir başlangıçtır.\n\n⚠️ Yatırım tavsiyesi değildir. Kripto piyasaları yüksek risk içerir.\n\n#BotZayba #gridtrading #kripto #algotrading #tradingbot #binance #bitcoin #kriptopara #otomasyon #borsa",
+  "source": "gemini"
+}
